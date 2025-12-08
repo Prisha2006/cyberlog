@@ -1,104 +1,130 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
-import 'use_cases/use_cases.dart';
+# Session 1#
+  import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const App());
-  if (kIsWeb) {
-    SemanticsBinding.instance.ensureSemantics();
-  }
+  runApp(const MyFirstApp());
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class MyFirstApp extends StatelessWidget {
+  const MyFirstApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData lightTheme = ThemeData(
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff6750a4),
-        contrastLevel: MediaQuery.highContrastOf(context) ? 1.0 : 0.0,
-      ),
-    );
-    final ThemeData darkTheme = ThemeData(
-      colorScheme: ColorScheme.fromSeed(
-        brightness: Brightness.dark,
-        seedColor: const Color(0xff6750a4),
-        contrastLevel: MediaQuery.highContrastOf(context) ? 1.0 : 0.0,
-      ),
-    );
-
-    final Map<String, WidgetBuilder> routes = Map<String, WidgetBuilder>.fromEntries(
-      useCases.map(
-        (UseCase useCase) => MapEntry<String, WidgetBuilder>(
-          useCase.route,
-          (BuildContext context) => useCase.buildWithTitle(context),
-        ),
-      ),
-    );
-
     return MaterialApp(
-      title: 'Accessibility Assessments Home Page',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      routes: <String, WidgetBuilder>{'/': (_) => const HomePage(), ...routes},
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  final ScrollController scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildUseCaseItem(int index, UseCase useCase) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Builder(
-        builder: (BuildContext context) {
-          return TextButton(
-            key: Key(useCase.name),
-            onPressed:
-                () => Navigator.of(context).pushNamed(useCase.route, arguments: useCase.name),
-            child: Text(useCase.name),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Semantics(headingLevel: 1, child: const Text('Accessibility Assessments')),
-      ),
-      body: Center(
-        child: ListView(
-          controller: scrollController,
-          children: List<Widget>.generate(
-            useCases.length,
-            (int index) => _buildUseCaseItem(index, useCases[index]),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("If Lost, Contact"),
+        ),
+        body: const Center(
+          child: Text(
+            "Name: Dhruv\nPhone: +91 99999 99999",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 22),
           ),
         ),
       ),
     );
   }
 }
+
+
+#Session 2#
+
+  import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: EvenOddChecker(),
+    );
+  }
+}
+
+class EvenOddChecker extends StatefulWidget {
+  @override
+  State<EvenOddChecker> createState() => _EvenOddCheckerState();
+}
+
+class _EvenOddCheckerState extends State<EvenOddChecker> {
+
+  TextEditingController numberController = TextEditingController();
+
+
+  String resultMessage = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Even / Odd Checker"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Enter a Number:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 10),
+
+            TextField(
+              controller: numberController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Enter any number",
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Button
+            ElevatedButton(
+              onPressed: () {
+                String input = numberController.text;
+                int? number = int.tryParse(input);
+
+                if (number == null) {
+                  setState(() {
+                    resultMessage = "Please enter a valid number!";
+                  });
+                  return;
+                }
+
+                // Conditional Logic
+                if (number % 2 == 0) {
+                  resultMessage = "The number $number is Even.";
+                } else {
+                  resultMessage = "The number $number is Odd.";
+                }
+
+                setState(() {}); // Update UI
+              },
+              child: const Text("Check Number"),
+            ),
+
+            const SizedBox(height: 25),
+
+            // Output Text
+            Text(
+              resultMessage,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
