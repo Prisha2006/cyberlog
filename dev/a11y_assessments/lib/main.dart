@@ -17,7 +17,7 @@ class MyFirstApp extends StatelessWidget {
         ),
         body: const Center(
           child: Text(
-            "Name: Dhruv\nPhone: +91 99999 99999",
+            "Name: Prisha\nPhone: +91 99999 99999",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 22),
           ),
