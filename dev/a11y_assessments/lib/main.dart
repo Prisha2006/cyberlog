@@ -128,3 +128,63 @@ class _EvenOddCheckerState extends State<EvenOddChecker> {
   }
 }
 
+#session 3#
+  import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';  
+
+void main() {
+  runApp(const MyApp());
+}
+
+class Log {
+  String action;
+  DateTime timestamp;
+  String status;
+
+  Log(this.action, this.timestamp, this.status);
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<Log> logs = [
+      Log("User Logged In", DateTime.now(), "Success"),
+      Log("Viewed Dashboard", DateTime.now().subtract(Duration(minutes: 5)), "Success"),
+      Log("Failed Login Attempt", DateTime.now().subtract(Duration(hours: 1)), "Failed"),
+      Log("Password Changed", DateTime.now().subtract(Duration(days: 1)), "Success"),
+    ];
+
+    final formatter = DateFormat("dd-MM-yyyy HH:mm");
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("CyberLog"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: logs.map((log) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(
+                  "${log.action} — ${formatter.format(log.timestamp)}",
+                  style: const TextStyle(fontSize: 18),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
