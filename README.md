@@ -31,4 +31,29 @@ The variable number is directly placed inside the string using $number.
 This makes the output message readable and easy to update without manual string concatenation.
 String interpolation improves clarity and reduces errors.
 
+#session3#
+How Classes Were Used
+A custom Log class was created to structure log entries:
+class Log {
+  String action;
+  DateTime timestamp;
+  String status;
+  Log(this.action, this.timestamp, this.status);
+}
+This allows each log to be treated as a real object with clearly defined properties instead of loose variables.
+Classes help organize data cleanly and make the project easier to extend later.
 
+How Lists & Iteration Were Used to Render UI
+A list of Log objects was created:
+List<Log> logs = [ Log(...), Log(...), Log(...) ];
+To display each log entry on the screen, the .map() function was used:
+children: logs.map((log) {
+  return Text("${log.action} — ${formattedTime}");
+}).toList(),
+
+Using .map() is efficient because:
+No manual looping widget-by-widget
+Clean, readable code
+Easy to add or remove items
+Converts each Log into a UI element automatically
+This is a standard Flutter approach for rendering repeating data.
