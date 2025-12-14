@@ -57,3 +57,8 @@ Clean, readable code
 Easy to add or remove items
 Converts each Log into a UI element automatically
 This is a standard Flutter approach for rendering repeating data.
+
+#session 5#
+<img width="540" height="1200" alt="image" src="https://github.com/user-attachments/assets/a254b661-a5b1-4427-ad78-777d41fd65a9" />
+
+
