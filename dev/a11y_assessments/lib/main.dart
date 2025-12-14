@@ -244,5 +244,73 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+#session  5#
+  import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const CyberLogApp());
+}
+
+class CyberLogApp extends StatelessWidget {
+  const CyberLogApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('CyberLog Home'),
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.count(
+          crossAxisCount: 2, // Two-column GridView
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          children: [
+
+
+            dashboardCard('Daily Log', Colors.blue.shade200),
+            dashboardCard('Cyber Tips', Colors.green.shade200),
+            dashboardCard('Device Security', Colors.orange.shade200),
+            dashboardCard('Notes', Colors.purple.shade200),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget dashboardCard(String title, Color color) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+}
+
 
 
