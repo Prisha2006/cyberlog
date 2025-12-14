@@ -185,6 +185,64 @@ class MyApp extends StatelessWidget {
   }
 }
 
+#Session 4#
+  import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const CyberLogApp());
+}
+
+class CyberLogApp extends StatelessWidget {
+  const CyberLogApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('CyberLog Home'),
+      ),
+
+      body: Column(
+        children: [
+
+          // First Card
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
+            color: Colors.blue.shade100,
+            child: const Text(
+              'Log Activity',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+
+          // Second Card
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
+            color: Colors.green.shade100,
+            child: const Text(
+              'View Logs',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 
 
