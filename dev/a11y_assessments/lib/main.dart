@@ -312,5 +312,76 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+#Session 6#
+  import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const CyberLogApp());
+}
+
+class CyberLogApp extends StatelessWidget {
+  const CyberLogApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CyberLogHome(),
+    );
+  }
+}
+
+class CyberLogHome extends StatefulWidget {
+  const CyberLogHome({super.key});
+
+  @override
+  State<CyberLogHome> createState() => _CyberLogHomeState();
+}
+
+class _CyberLogHomeState extends State<CyberLogHome> {
+
+  int currentIndex = 0;
+
+  final List<Widget> screens = const [
+    Center(child: Text('Home Screen')),
+    Center(child: Text('Logs Screen')),
+    Center(child: Text('Settings Screen')),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('CyberLog'),
+      ),
+
+      body: screens[currentIndex],
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Logs',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 
