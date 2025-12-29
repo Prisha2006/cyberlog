@@ -384,4 +384,82 @@ class _CyberLogHomeState extends State<CyberLogHome> {
 }
 
 
+#Session 7#
+  import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => LogProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
+  }
+}
+
+class LogProvider extends ChangeNotifier {
+  final List<String> _logs = [];
+
+  List<String> get logs => _logs;
+
+  void addLog(String log) {
+    _logs.add(log);
+    notifyListeners();
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final logProvider = context.watch<LogProvider>();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('CyberLog'),
+      ),
+      body: logProvider.logs.isEmpty
+          ? const Center(
+              child: Text(
+                'No Logs Yet',
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          : ListView.builder(
+              itemCount: logProvider.logs.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  child: ListTile(
+                    leading: const Icon(Icons.security),
+                    title: Text(logProvider.logs[index]),
+                  ),
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context
+              .read<LogProvider>()
+              .addLog('Security check at ${DateTime.now()}');
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
 
