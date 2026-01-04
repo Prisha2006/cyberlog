@@ -572,3 +572,88 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
+
+
+#session 9#
+  import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ChecklistScreen(),
+    );
+  }
+}
+
+class ChecklistScreen extends StatefulWidget {
+  const ChecklistScreen({super.key});
+
+  @override
+  State<ChecklistScreen> createState() => _ChecklistScreenState();
+}
+
+class _ChecklistScreenState extends State<ChecklistScreen> {
+  final List<String> tasks = [
+    "Change passwords",
+    "Enable two-factor authentication",
+    "Check app permissions",
+    "Update apps",
+    "Avoid public Wi-Fi",
+  ];
+
+  List<bool> checked = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadChecklist();
+  }
+
+  Future<void> loadChecklist() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      checked = List.generate(
+        tasks.length,
+            (index) => prefs.getBool('task_$index') ?? false,
+      );
+    });
+  }
+
+  Future<void> saveTask(int index, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('task_$index', value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Daily Security Checklist"),
+      ),
+      body: ListView.builder(
+        itemCount: tasks.length,
+        itemBuilder: (context, index) {
+          return CheckboxListTile(
+            title: Text(tasks[index]),
+            value: checked.isNotEmpty ? checked[index] : false,
+            onChanged: (value) {
+              setState(() {
+                checked[index] = value!;
+              });
+              saveTask(index, value!);
+            },
+          );
+        },
+      ),
+    );
+  }
+}
