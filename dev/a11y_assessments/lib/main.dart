@@ -657,3 +657,128 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
     );
   }
 }
+
+#session 10#
+  import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:camera/camera.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  CameraController? _cameraController;
+  bool cameraReady = false;
+  String statusText = "No action yet";
+
+  @override
+  void initState() {
+    super.initState();
+    requestAllPermissions(); // 🔐 runtime permission request
+  }
+
+  Future<void> requestAllPermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.storage,
+    ].request();
+
+    if (statuses[Permission.camera]!.isGranted &&
+        statuses[Permission.storage]!.isGranted) {
+      setState(() {
+        statusText = "Camera & Storage Permission Granted ✅";
+      });
+    } else {
+      setState(() {
+        statusText = "Permission Denied ❌";
+      });
+    }
+  }
+
+  Future<void> openCamera() async {
+    if (!await Permission.camera.isGranted) {
+      setState(() {
+        statusText = "Camera permission not granted";
+      });
+      return;
+    }
+
+    final cameras = await availableCameras();
+    _cameraController = CameraController(
+      cameras.first,
+      ResolutionPreset.medium,
+    );
+
+    await _cameraController!.initialize();
+    setState(() {
+      cameraReady = true;
+      statusText = "Camera Opened Successfully 📷";
+    });
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Permission Demo App")),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text(
+              statusText,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: requestAllPermissions,
+              child: const Text("Request Permissions"),
+            ),
+
+            const SizedBox(height: 10),
+
+            ElevatedButton(
+              onPressed: openCamera,
+              child: const Text("Open Camera"),
+            ),
+
+            const SizedBox(height: 20),
+
+            if (cameraReady && _cameraController != null)
+              AspectRatio(
+                aspectRatio: _cameraController!.value.aspectRatio,
+                child: CameraPreview(_cameraController!),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
